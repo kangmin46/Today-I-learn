@@ -1,0 +1,44 @@
+
+## SQL 인젝션
+
+SQL 인젝션의 여러가지 종류
+
+SQL 인젝션이 일어나기 위한 조건
+
+1. 웹 애플리케이션이 DB 와 연동하고 있다. 
+2. 외부 입력값이 DB 쿼리문으로 사용된다.
+
+    SQL = "Select * From Users"
+    
+           + " Where UserID = '"+ UserID +"' And Password = '" + Password + "'"
+
+- 먼저 SQL 구문의 주석(Comment)을 의도적으로 삽입하여 Where 조건을 무력화 시킬 수 있다. 다음과 같이 UserID 값에 주석을 삽입하면 **주석 이하의 구문은 실행되지 않게 되어 admin이라는 계정의 패스워드를 몰라도 인증을 통과**하게 된다. (admin이라는 ID는 이미 알고 있다고 가정한다. 그리고 -- 는 MS SQL Server의 주석이다. MySQL의 경우 #을 사용해야 한다.)
+
+    [ 외부 입력값 ]
+    UserID: admin'--
+    Password: 아무거나
+    
+    [ 실행되는 쿼리문 ]
+    Select * From Users Where UserID = 'admin'-- And Password = '아무거나'
+
+- 또한 항상 참이 되도록 Boolean 식을 구성하여 Where 조건을 무력화 시킬 수 있다. 다음과 같이 Password 값에 참(true)인 조건이 or 로 연결되도록 삽입하면 or 조건으로 인해 쿼리의 결과가 무조건 참이 되어 없는 계정과 다른 패스워드라 할지라도 (여기서는 test라는 계정은 실제 db에 없는 계정임) 인증을 통과하게 된다.
+
+    [ 외부 입력값 ]
+    UserID: test
+    Password: 1234' or '1'='1
+    
+    [ 실행되는 쿼리문 ]
+    Select * From Users Where UserID = 'test' And Password='1234' or '1'='1'
+
+- 이와 같은 방식을 이요하여 인증을 우회하기도 하지만, 직접 데이터베이스 내용을 조작할 수도 있다. 다음과 같이**;(콜론)**으로 명령어를 연결하면 한 줄로 된 두 개 이상의 명령어를 연속해서 기입할 수 있는데 여기에 테이블을 삭제하거나 수정하는 조작된 쿼리문을 삽입할 수 있다.
+
+    [ 외부 입력값 ]
+    UserID: admin' ; DELETE From Users--
+    Password: 아무거나
+    
+    [ 실행되는 쿼리문 ]
+    Select * From Users Where UserID = 'admin' ; DELETE From Users -- And Password='아무거나'
+
+1. 인증 우회 (Auth byPass)
+    - 로그인 페이지를 타겟으로 한다.
+    - SQL 쿼리문의 논리적 연산 오류를 이용하여 로그인 인증 쿼리문이 무조건 true가 나오게 하여 인증을 무력화 하는 방법
