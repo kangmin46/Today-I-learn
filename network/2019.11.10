@@ -1,0 +1,15 @@
+* Template Engine을 쓰지 않으면 스프링에서 Default path는 static 폴더이다. 
+* PrepareStatement를 사용하더라도 Parameter Binding을 하지 않으면 SQL 인젝션에 취약하다.
+    * 추가적으로 SetString 메소드 내부에서 이스케이프 해야할 문자열이 있다면 이스케이프 해주게 된다.
+* JPQL을 사용할 떄에도 조심해야 되는데 역시 Parameter Binding을 하지 않으면 취약하다. 
+* form 태그에서 자바스크립트를 사용하지 않으면 button에 submit을 해줘야 정상적으로 작동한다. 
+
+* &allowMultiQueries=true" 를 데이터베이스 연결 url에 적어줘야 MultipleQuery가 가능하다. 
+* 일반적으로 DB 커넥션을 가져올 때에 DriverManager를 사용한다. 
+* SPA : single page webapplication 
+    * 브라우저에 로드되고 난 뒤에 페이지 전체를 서버에 요청하는 것이 아니라, 최초 한번 페이지 전체를 로딩을 한 후 부터는 데이터만 변경하여
+    사용할 수 있는 웹 애플리케이션을 의미한다.
+* 클라이언트 사이드 렌더링 : 서버는 Json만 보내주고, HTML을 그리는 역할은 브라우저에서 실행한다. 
+    장점 : 초기 실행속도는 느리지만 그 이후 인터렉션은 빠르다.
+* 서버 사이드 렌더링 
+    장점 : 초기 실행속도는 빠르지만 그 이후 인터렉션은 느리다. 
