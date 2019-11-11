@@ -1,0 +1,35 @@
+* Spring data jpa 에서 hibernate를 사용하기 위해서는 application.properties에 spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect를 해줘야 한다.
+* 그런데 DB 의 테이블을 자동으로 만들지 안만들지를 결정해줘야 하는데 이것은 spring.jpa.hibernate.ddl-auto=update라는 설정을 하면 된다.
+* Update를 테이블을 한번 만들고 업데이트 하는 방식이지만, create로하면 매번 테이블이 새로만들어지기 때문에 테이블이 계속 날라간다. 
+* 추가로 ddl-auto none을 하게되면 schema.sql로 내가 직접 DB 생성하는 테이블을 만들어줘야할 필요가 있다. 
+* 또 내가 삽질을 한 바로는 JPA 로 DB에 접근할 때 비밀번호가 없는 경우가 있을 수 있는 데 비밀번호가 없다고 spring.datasource.password='' 이렇게 설정을 해놓으면 에러가 난다.
+* 따라서 spring.datasource.password='' 부분을 주석처리할 필요가 있다.
+
+* DI 미션을 하며 느낀 피드백 : List를 파라미터로 넘기면서 add를 했던 적이 있었다./
+* 그럴 때에 리뷰어는 List 같은 컬렉션을 다른메서드에서 사용할 때에는 인자로 받은 컬렉션은 불변성을 보장하는 것이 좋다고 했다. 
+* 확실히 List를 생성한 메서드와  add를 한 메서드가 다르다면 어디서 데이터가 add가 되었는지 모르기 때문에 추적이 어렵고 디버깅이 어려운 매우 위험한 코드라는 걸 깨달았다.. 
+* com.mysql.cj.jdbc.Driver 에서 cj부분은 최신의 mysql 버전을 사용할 때 사용한다. 
+* implementation 'org.springframework.boot:spring-boot-starter-data-jpa' 는 spring data jpa를 사용할 때에 build.gradle에 추가해 줘야하는 부분이다. 
+
+## 1. 서버의 개요
+
+### 1-1 클라이언트와 서버의 차이점
+
+- 서버와 클라이언트의 차이
+    - Socket 라이브러리의 사용법이 조금 다름.
+    - 서버의 애플리케이션은 동시에 다수의 클라이언트 PC와 대화한다는 차이점도 있다.
+
+## 1-2 서버 애플리케이션 구조
+
+- 서버는 애플리케이션이 처음 구동될 때 설정파일을 읽는 등의 초기화 작업을 하고 클라이언트로의 연결을 기다린다.
+
+## 1-3 서버측의 소켓과 포트 번호
+
+- bind() 와  Listen()을 하는 측은 서버이다.
+- 서버는 같은 포트 번호를 가진 여러개의 소켓이 존재할 수 있다.
+    - 하지만 클라이언트의 포트가 다 다르기 때문에 클라이언트측의 포트 번호에 따라 소켓을 지정할 수 있다.
+    - 디스크립터는 아직 접속하지 않은 상태일 때에는 4가지 정보가 없기 때문에 디스크립터를 사용할 수 밖에 없다.
+        1. 클라이언트측의  IP주소
+        2. 클라이언트측의 포트 번호
+        3. 서버측의 IP 주소
+        4. 서버측의 포트 번호
