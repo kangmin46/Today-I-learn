@@ -1,0 +1,65 @@
+- 파이프
+    - pipe()도 시스템 콜이다.
+    - pipe() 시스템콜 예제
+    - fork() 로 자식 프로세스 만들었을 때, 부모와 자식간의 통신
+
+        int fd[2];
+        if(pipe(fd) <0)
+        	exit(1);
+
+    - 기본 파이프는 단방향 통신
+
+        if( pid > 0 ) {
+         write(fd[1], msg, MSGSIZE);
+         exit(0);
+        }
+        else {
+        	nbytes = read(fd[0], buf, MSGSIZE); //여기서의 buf가 위에서의 msg 이다. 즉 통신이 된다. 
+          printf("%d %s\n", nbytes, bug);
+          exit(0);
+        }
+        return 0;
+
+    - 그래서 부모 프로세스에서  fd를 사용할 때에  fd[1]을 사용하고, 자식 프로세스 에서는 fd[0]을 사용한다.
+    - fork() 로 자식 프로세스 만들었을 때, 부모와 자식간의 통신
+- fork()는 시스템 콜이다.
+    - fork() 를 호출하면 새로운 프로세스가 생긴다.
+    - ex ) pid = fork();
+- 왜 자식 프로세스를 만들까??
+    - fork()를 호출하면 리턴 값으로 pid는 부모 프로세스는 프로세스 id가 반환되고, 자식 프로세스는 pid =0 으로 된다.
+    - 그래서 pid로 자식과 부모 프로세스의 동작을 다르게 한다.
+
+- 메세지 큐 코드 예제
+
+- A프로세스
+
+    msqid = msgget(key, msgflg) // key는 1234, msgflg는 옵션
+    msgsnd(msqid, $sbuf, buf_length, IPC_NOWAIT)
+
+- B프로세스
+
+    msqid = msgget(key, msgflg)
+    msgrcv(msqid, &rbuf, MSGSZ, 1, 0)
+
+- 파이프와 메세지 큐
+    - 메세지 큐는 부모 자식 프로세스간의 통신이 아니라 프로세스의 키값만 알면 통신할 수 있다.
+    - 먼저 넣은 데이터가 먼저 읽혀진다.
+    - 파이프는 단방향만 가능 (부모에서 자식으로), 메시지 큐는 양방향 둘다 가능
+- 공유 메모리(shared memory)
+    - 노골적으로 커널 공간에 메모리 공간을 만들고, 해당 공간을 변수처럼 쓰는 방식
+    - message queue 처럼 FIFO 방식이 아니라, 해당 메모리 주소를 마치 변수처럼 접근하는 방식
+    - 공유메모리 key를 가지고. 여러 프로세스가 접근 가능
+    - 공유 메모리 생성 및 공유 메모리 주소 얻기
+
+    shmid = shmget(key_t)1234, SIZE, IPC_CREAT|0666))
+    shmaddr = shmat(shmid, (void *)0, 0)
+
+정리
+
+주요 IPC 기법
+
+1. pipe
+2. message queue
+3. shared memory
+
+모두 커널 공간을 활용해서 프로세스간 데이터 공유
