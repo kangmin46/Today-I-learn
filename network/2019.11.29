@@ -1,0 +1,38 @@
+- npm이란? : node Package Module의 약자로,  node js에서 사용가능한 모듈들을 패키지화 시켜놓은 것이다.
+- Web Browser 에서 작동하는 javaScript와 Node.js의 차이점이 무엇인가??
+    - javascript는 두가지의 의미가 있다.
+    1. language로서의 자바스크립트
+    2. Run Time(언어가 작동하는 환경) 으로의 자바스크립트
+- 자바스크립트로 웹 브라우저와 서버를 제어할 수 있다.
+- 자바스크립트와 node js의 차이가 있다.
+    - 예를들면 alert라는 함수는 only web에서만 작동을 하고 서버에서는 사용할 수 없다.
+    - alert라는 함수는 node.js에서는 없는 함수이다.
+
+- Vue는 무엇인가?
+    - MVVM 패턴의 뷰모델(viewModel) 레이어에 해당하는 view단 라이브러리
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0f56f0d3-1d79-455e-b44c-2fc0688de3b6/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0f56f0d3-1d79-455e-b44c-2fc0688de3b6/Untitled.png)
+
+- !tab을 누르면 index.html의 기본 모양이 나온다.
+- cmd \ 하면 옆에 나오는 뭐 프로젝트 정보 이런 게 꺼진다.
+
+    var str = 'Hello world';
+    div.innerHTML(str);
+    str = 'Hello world!!!'
+    
+
+- 이라고 하면 바뀐 내용이 div태그에 반영이 되야하는데 반영이 되지 않는다.
+- vue의 핵심 : 데이터의 변화를 라이브러리에서 감지해서 알아서 화면을 자동으로 그려주는 것(Data binding)
+- 즉시 실행 함수 : 변수의 유효범위를 정하기 위한 것으로 일반적인 라이브러리 등이 이런 형식을 띄고있다.
+    - 즉시 실행 함수는 정의되자마자 실행되는 함수이다.
+
+
+var vm = new Vue({
+    	el: '#app'
+    });
+
+- 이렇게하면 app이라는 id를 가진 태그는 뷰의 api를 사용할 수 있게 된다.
+- 함수의 첫글자가 대문자이면 생성자 함수다.
+- 생성자 함수를 사용하는 이유
+    - 생성자 함수안에 여러개의 함수를 정의해 놓고 인스턴스화 해서 사용하면 편리하기 때문
+- Vue() 안에 들어가는 것은 객체가 들어간다.
