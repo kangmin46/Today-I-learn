@@ -1,0 +1,52 @@
+## 뷰 라우터
+- 뷰에서 라우터는 싱글 페이지 애플리케이션이나, 페이지 간 이동을 할때 주로 사용하는 라이브러리 이다.
+- script 태그를 넣을 때 순서도 중요하다.
+    - 예를들어 vue.js 를 추가하고
+    - 라우터를 추가해야되는데 순서가 바뀌면 할 수 없다.
+
+    <router-view></router-view>
+
+- router-view라는 태그는 vue에  VueRouter를 연결했을 때에 사용할 수 있다.
+- router-link 는 페이지를 이동하기 위한 태그
+
+    <router-link to='/login'></router-link>
+
+- 액시오스
+    - 뷰에서 권고하는 HTTP 통신 라이브러리이다.
+    - Promise 기반의 HTTP 통신 라이브러리이다.
+- 자바스크립트의 비동기 패턴
+    1. callback
+    2. promise
+    3. promise + generator
+    4. async & await
+
+- 프로미스(Promise)
+    - 자바스크립트의  비동기 처리 패턴
+    - 프로미스의 3가지 상태
+        1. Pending(대기) : 비동기 처리 로직이 아직 완료되지 않은 상태
+
+                new Promise(function(resolve, reject){
+                	// ... 
+                });
+
+        2. Fulfilled(이행) : 비동기 처리가 완료되어 프로미스가 결과 값을 반환해준 상태
+
+            new Promise(function(resolve, reject) {
+            	resolve();
+            });
+
+            function getData() {
+             return new Promise(function (resolve, reject) {
+               var data = 100;
+               resolve(data);
+            });
+            }
+            
+            getData().then(function (resolvedData) {
+               console.log(resolvedData);
+            });
+
+        3. Rejected(실패) : 비동기 처리가 실패하거나 오류가 발생한 상태
+
+- 개발자 도구 네트워크 패널
+    - XHR : 이 탭은 비동기 통신할 때 본다.
