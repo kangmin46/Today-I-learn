@@ -1,0 +1,39 @@
+## 인덱스
+
+- 인덱스는 특정 칼럼 값을 가지고 있는 열을 빠르게 찾기 위해서 사용된다.
+- 만약 테이블이 쿼리에 있는 칼럼에 대한 인덱스를 가지고 있다면,  Mysql은 모든 데이터를 조사하지 않고도 파일의 중간에서 검색위치를 빠르게 잡아낼 수 있다.
+- 대부분의 Mysql 인덱스는 B-트리에 저장되며 그 종류는 Primary key, unique, index, fulltext가 있다.
+
+- 인덱스 사용 이유
+    1. where 구문과 일치하는 열을 빨리 찾기 위해서
+    2. join을 실행할 때 다른 테이블에서 열을 추출하기 위해서
+    3. 특정하게 인덱스된 칼럼을 위한 MIN() 또는 MAX() 값을 찾기 위해서
+- 인덱스를 사용해야 하는 경우
+    1. 데이터 양이 많고 검색이 변경보다 빈번한 경우
+    2. 인덱스를 걸고자 하는 필드의 값이 다양한 값을 가지는 경우
+
+- Group By
+    - group by를 where절과 order by절 사이에 위치한다.
+    - select name from user group by name; 이렇게 하면 이름이 몇 종류가 있는지 종류만 나온다!
+
+## Multi thread WAS vs Single thread WAS
+
+- tomcat의 default thread는 200개
+- multi thread 라도 사용자 수가 1만명 이상 이면 버티기 힘들고 Context Switching 비용이 많이 발생하게 된다.
+- multi thread라도 내부적으로 하드웨어 상 들어가보면 한번에 하나밖에 처리를 못한다 CPU에서..
+- Sync vs Async
+    - 물건 주문 예시
+        - 주문 : 0.5초, 메일발송 : 2초라고 가정
+        - Sync : 2.5초
+        - Async 응답속도 : 0.5초 + 알파
+            - 얘는 메일 발송을 모두 처리하기도 전에 응답을 바로 해버린다.
+            - Async를 하게 되면 Tomcat thread와는 또 다른 Thread pool을 가진다. 그리고 그 Thread에 작업을 위임한다.
+- I/O 멀티플렉싱 : thread 하나가 여러명의 사용자의 처리를 담당
+- Blocking vs  NonBlocking
+    - 사용자 애플리케이션에서 I/ O를 호출했을 때 즉각적으로 운영체제가 응답하느냐 마느냐이다..
+    - 호출된 함수가 바로 리턴해서 호출한 함수에게 제어권을 넘겨주고, 호출한 함수가 다른일을 할 수 있는 기회를 주는 게 NonBlocking이다.
+- Sync vs Async
+    - 애플리케이션과 운영체제 사이에서 애플리케이션이 운영체제에 계속 물어보는 건 Sync
+    - 운영체제가 애플리케이션에게 일이 끝났다고 먼저 이야기 하는 게 Async
+- 브라우저는 싱글스레드이다.
+- rest Template? web Client?
